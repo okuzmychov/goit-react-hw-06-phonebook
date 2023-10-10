@@ -1,12 +1,11 @@
 import { FormStyled, LabelSt, ErrorMsg } from './ContactForm.styled';
 import { Formik, Field } from 'formik';
 import { ButtonSubmit } from 'components/Section/Section.styled';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactSlice';
 import { getContacts } from 'redux/selectors';
-
 
 const ContactSchema = Yup.object().shape({
     name: Yup.string()
