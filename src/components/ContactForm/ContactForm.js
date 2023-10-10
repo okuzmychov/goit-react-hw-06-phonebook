@@ -3,7 +3,10 @@ import { Formik, Field } from 'formik';
 import { ButtonSubmit } from 'components/Section/Section.styled';
 import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
-// import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactSlice';
+import { getContacts } from 'redux/selectors';
+
 
 const ContactSchema = Yup.object().shape({
     name: Yup.string()
@@ -17,32 +20,42 @@ const ContactSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
+  const contacts = useSelector(getContacts);
+  const dispach = useDispatch();
+
+  const onSubmit = contact => {
+    if (
+      contacts.some(
+        el => el.name === contact.name || el.number === contact.number
+      )
+    )
+      return;
+    dispach(addContact(contact));
+  };
 
   return (
+    <>
     <Formik
       initialValues={{
         name: '',
         number: '',
         }}
         validationSchema={ContactSchema}
-        onSubmit={(values, actions) => {
-          values.id = 'id-' + nanoid(3);
-          onSubmit(values);
-          actions.resetForm();
-        }}
+        onSubmit={values => onSubmit(values)}
       >
         <FormStyled>
             <LabelSt htmlFor="name">Name</LabelSt>
-            <Field name="name" type="text" />
+            <Field id="name" name="name" placeholder="Oleg" />
             <ErrorMsg name="name" component="div" />
 
           <LabelSt htmlFor="number">Number</LabelSt>
-            <Field name="number" type="tel" />
+            <Field id="number" name="number" type="tel" placeholder="+380501234567" />
             <ErrorMsg name="number" component="div" />
 
           <ButtonSubmit type="submit">Add contact</ButtonSubmit>
           </FormStyled>
-    </Formik>
+      </Formik>
+      </>
     );
 };
