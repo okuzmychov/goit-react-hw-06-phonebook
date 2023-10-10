@@ -1,11 +1,14 @@
 import { FilterForm } from './Filter.styled';
+import { useDispatch } from 'react-redux';
+import { setFilter } from 'redux/filterSlice';
 
-export const Filter = ({ onFilterChange, value }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
   return (
      <FilterForm>
       <label htmlFor="find">Find contacts by name:</label>
-      <input type="text" value={value}
-        onChange={evt => onFilterChange(evt.target.value)} />
+      <input type="text" name="find"
+        onChange={e => dispatch(setFilter(e.target.value.toLowerCase()))} />
     </FilterForm>
   );
 };
