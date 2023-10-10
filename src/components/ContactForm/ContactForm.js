@@ -41,7 +41,10 @@ export const ContactForm = () => {
         number: '',
         }}
         validationSchema={ContactSchema}
-        onSubmit={values => onSubmit(values)}
+        onSubmit={(values, actions) => {
+          onSubmit(values);
+          actions.resetForm();
+        }}
       >
         <FormStyled>
             <LabelSt htmlFor="name">Name</LabelSt>
