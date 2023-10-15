@@ -1,39 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import persistReducer from 'redux-persist/es/persistReducer';
-import storage from 'redux-persist/lib/storage';
+import toast from 'react-hot-toast';
 
-const contactSlice = createSlice({
-  name: 'contact',
-  initialState: { list: [] },
+const contactsSlice = createSlice({
+  name: 'contacts',
+  initialState: { contactsList: [] },
   reducers: {
     addContact: {
-      reducer(state, action) {
-        state.list.push(action.payload);
+      reducer(state, { payload }) {
+        state.contactsList.push(payload);
       },
-      prepare(contact) {
+      prepare(name, number) {
         return {
           payload: {
-            ...contact,
-            id: 'id' + nanoid(3),
+            id: nanoid(),
+            name,
+            number,
           },
         };
       },
     },
-    deleteContact(state, action) {
-      const idx = state.list.findIndex(el => el.id === action.payload);
-      state.list.splice(idx, 1);
+
+    deleteContact(state, { payload }) {
+      const deletedContact = state.contactsList.find(
+        contact => contact.id === payload
+      );
+      if (deletedContact) {
+        state.contactsList = state.contactsList.filter(
+          contact => contact.id !== payload
+        );
+        toast.success(`${deletedContact.name} is successfully deleted`,);
+      }
     },
   },
 });
 
-const persistConfig = {
-  key: 'contacts',
-  storage,
-};
-
-export const persistedContactsReducer = persistReducer(
-  persistConfig,
-  contactSlice.reducer
-);
-export const { addContact, deleteContact } = contactSlice.actions;
+export const contactsReducer = contactsSlice.reducer;
+export const { addContact, deleteContact } = contactsSlice.actions;
