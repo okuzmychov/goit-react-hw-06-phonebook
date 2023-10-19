@@ -9,7 +9,7 @@ export const Title = styled.h2`
   text-align: center;
   text-transform: uppercase;
 
-  color: #19293b;
+  color: #193b1e;
 `;
 
 export const FormStyled = styled.input`
@@ -18,13 +18,13 @@ export const FormStyled = styled.input`
   width: 100%;
 
   border-radius: 4px;
-  border: 1px solid #40bfff;
+  border: 1px solid #3A5A40;
 
   &::placeholder {
     padding: 0;
     margin: 0;
     font-size: 14px;
-    color: #40bfff;
+    color: #3A5A40;
   }
 `;
 
@@ -42,14 +42,14 @@ export const AddButton = styled.button`
 
   border-radius: 4px;
   border: none;
-  background-color: #40bfff;
+  background-color: #A3B18A;
 
   cursor: pointer;
 
   transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    background-color: #0099e6;
+    background-color: #3A5A40;
   }
 `;
 
