@@ -1,4 +1,4 @@
-import { StyledWrapper, StyledLi, StyledButton } from './ContactList.styled';
+import { Title, Text, StyledWrapper, StyledLi, StyledButton } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/contactSlice';
 import { formatContactNumber } from 'utils/formatContactNumber';
@@ -21,14 +21,15 @@ export const ContactList = () => {
     <>
       {contacts.length > 0 ? (
         <>
+          <Title>Contacts</Title>
           <Filter />
         <StyledWrapper>
         {getContacts().map(contact => {
               return (
               <StyledLi key={contact.id}>
-              <p>
+              <Text>
               {contact.name}: {formatContactNumber(contact.number)}
-              </p>
+              </Text>
               <StyledButton type="button" onClick={() => dispatch(deleteContact(contact.id))}>
               DELETE
               </StyledButton>
