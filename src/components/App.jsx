@@ -1,22 +1,30 @@
+import { GlobalStyle } from '../GlobalStyle';
+import { Container } from './App.styled';
 import { ContactForm } from './ContactForm/ContactForm';
-import { Section } from './Section/Section';
-import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
-import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { Toaster } from 'react-hot-toast';
 
-export const App = () => {
-  const contacts = useSelector(getContacts);
-
+export function App () {
   return (
     <>
-      <Section title={'Phonebook'}>
+      <Container>
         <ContactForm />
-      </Section>
-      <Section title={'Contacts'}>
-        <Filter />
-        {contacts.length ? <ContactList /> : <p>No contacts</p>}
-      </Section>
+        <ContactList />
+        <GlobalStyle />
+        <Toaster
+        gutter={4}
+        containerStyle={{
+          top: 53,
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            width: '360px',
+            padding: '16px',
+          },
+        }}
+      />
+      </Container>
     </>
   );
 };

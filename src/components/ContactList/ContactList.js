@@ -1,7 +1,8 @@
 import { StyledWrapper, StyledLi, StyledButton } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/contactSlice';
-import { getContacts, getFilter } from 'redux/selectors';
+import { formatContactNumber } from 'utils/formatContactNumber';
+// import { getContacts, getFilter } from 'redux/selectors';
 import { Filter } from 'components/Filter/Filter';
 
 export const ContactList = () => {
