@@ -39,10 +39,11 @@ export const ContactForm = () => {
  const onSubmit = ({ name, number }) => {
     if (
       contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
+        contact => contact.name.toLowerCase() === name.toLowerCase() ||
+        contact.number === number
       )
     ) {
-      toast.error(`${name} is already in contacts`, {
+      toast.error(`Contact with the same name or number already exists`, {
         style: {
           background: '#ffd500',
         },
