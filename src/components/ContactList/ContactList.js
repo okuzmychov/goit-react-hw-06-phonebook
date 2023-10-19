@@ -2,26 +2,43 @@ import { StyledWrapper, StyledLi, StyledButton } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/contactSlice';
 import { getContacts, getFilter } from 'redux/selectors';
+import { Filter } from 'components/Filter/Filter';
 
 export const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
-  const dispach = useDispatch();
+  const contacts = useSelector(state => state.contacts.contactsList);
+  const filter = useSelector(state => state.filter.value);
+  const dispatch = useDispatch();
+
+   const getContacts = () => {
+    let normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
 
   return (
-    <StyledWrapper>
-      {contacts
-        .filter(el => el.name.toLowerCase().includes(filter))
-        .map(({ id, name, number }) => (
-        <StyledLi key={id}>
-          <p>
-            {name}: {number}
-            </p>
-            <StyledButton type="button" id={id} onClick={e => dispach(deleteContact(e.target.id))}>
-            DELETE
-          </StyledButton>
-        </StyledLi>
-      ))}
-    </StyledWrapper>
+    <>
+      {contacts.length > 0 ? (
+        <>
+          <Filter />
+        <StyledWrapper>
+        {getContacts().map(contact => {
+              return (
+              <StyledLi key={contact.id}>
+              <p>
+              {contact.name}: {formatContactNumber(contact.number)}
+              </p>
+              <StyledButton type="button" onClick={() => dispatch(deleteContact(contact.id))}>
+              DELETE
+              </StyledButton>
+              </StyledLi>
+                );
+            })}
+          </StyledWrapper>
+          </>
+      ) : (
+        <p>No contacts in phone book</p>
+      )}
+      </>
   );
 };
