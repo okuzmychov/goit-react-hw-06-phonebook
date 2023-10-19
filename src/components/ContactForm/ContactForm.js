@@ -36,7 +36,8 @@ export const ContactForm = () => {
     resolver: yupResolver(ContactSchema),
   });
 
- const onSubmit = ({ name, number }) => {
+  const onSubmit = (event, { name, number }) => {
+   event.preventDefault();
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase() ||
@@ -64,7 +65,7 @@ export const ContactForm = () => {
   return (
     <>
       <Title>Phone Book</Title>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(event) => onSubmit(event, { name, number })}>
         <FormStyled
           type="text"
           {...register('name')}
