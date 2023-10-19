@@ -65,7 +65,7 @@ export const ContactForm = () => {
   return (
     <>
       <Title>Phone Book</Title>
-      <form onSubmit={(event) => onSubmit(event, { name, number })}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormStyled
           type="text"
           {...register('name')}
