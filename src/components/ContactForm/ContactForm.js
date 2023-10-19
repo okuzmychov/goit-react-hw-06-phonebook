@@ -1,32 +1,37 @@
-import { Title, FormStyled, AddButton, ErrorMsg } from './ContactForm.styled';
-// import { Formik, Field } from 'formik';
-// import { ButtonSubmit } from 'components/Section/Section.styled';
+import {
+  Title,
+  FormStyled,
+  AddButton,
+  ErrorMsg,
+} from './ContactForm.styled';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactSlice';
-// import { getContacts } from 'redux/selectors';
 import toast from 'react-hot-toast';
 
 const ContactSchema = Yup.object().shape({
-    name: Yup.string()
-    .matches(/^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
-    'Name may contain only letters, apostrophe, dash and spaces')
+  name: Yup.string()
+    .matches(
+      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+      'Name may contain only letters, apostrophe, dash, and spaces'
+    )
     .required('Required'),
   number: Yup.string()
-    .length(13, `Number must have 13 symbol`)
-    .matches(/\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
-  'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
-)
+    .length(13, 'Number must have 13 symbols')
+    .matches(
+      /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
+      'Phone number must consist of digits and can contain spaces, dashes, parentheses, and can start with +'
+    )
     .required('Required'),
 });
 
 export const ContactForm = () => {
-  const contacts = useSelector(state => state.contacts.contactsList);
+  const contacts = useSelector((state) => state.contacts.contactsList);
   const dispatch = useDispatch();
 
-    const {
+  const {
     register,
     handleSubmit,
     reset,
@@ -36,30 +41,31 @@ export const ContactForm = () => {
     resolver: yupResolver(ContactSchema),
   });
 
-  const onSubmit = (event, { name, number }) => {
-   event.preventDefault();
+  const onSubmit = (data) => {
+    const { name, number } = data;
+
     if (
-      contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase() ||
-        contact.number === number
+      contacts.some(
+        (contact) =>
+          contact.name.toLowerCase() === name.toLowerCase() ||
+          contact.number === number
       )
     ) {
-      toast.error(`Contact with the same name or number already exists`, {
+      toast.error('Contact with the same name or number already exists', {
         style: {
           background: '#ffd500',
         },
       });
+    } else {
+      toast.success(`${name} is added to contacts`, {
+        style: {
+          color: 'white',
+          background: '#5cc400',
+        },
+      });
+      dispatch(addContact(name, number));
       reset();
-      return;
     }
-    toast.success(`${name} is added to contacts`, {
-      style: {
-        color: 'white',
-        background: '#5cc400',
-      },
-    });
-    dispatch(addContact(name, number));
-    reset();
   };
 
   return (
